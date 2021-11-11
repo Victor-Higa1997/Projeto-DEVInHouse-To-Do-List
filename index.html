@@ -17,18 +17,10 @@
 
     <input type="text" id="tarefa" placeholder="Digite uma tarefa..">
     <button onclick="addTarefa()">Adicionar</button>
+    <button onclick="carregaLista()">Adicionar</button>
 
-    <ul id="listaTarefas"> 
-        <li type="checkbox" >
-            <input type="checkbox" onclick="sublinhar()" class="checkbox">
-            <label class="label">pesquisar</label>
-            <button>X</button>
-        </li>
-        <li>
-            <input type="checkbox" onclick="sublinhar()" class="checkbox">
-            <label class="label">estudar</label>
-            <button>X</button>
-        </li>
+    <ul id="listaTarefas" onload="carregaLista()"> 
+       
     </ul>
 
 </body>
