@@ -1,14 +1,43 @@
 let indice = 0
 
-function addTarefa(){
-    //VARIAVEIS
-    let tarefas = []
+//CRIANDO OBJETO TAREFA
+var tarefa = {
+    id: null,
+    descricao: '',
+    tarefaFeita: false,
+}
 
-    //ARMAZENA O VALOR INSERIDO NO INPUT EM UM VETOR
-    tarefas[indice] = document.getElementById("tarefa").value
-    //CRIA UMA VARIAVEL PARA A LISTA
-    var lista = document.getElementById("listaTarefas")
+//VARIAVEIS
+let tarefas = new Array()
+
+
+function addTarefa() {
+
+
+    //PREENCHE O OBJETO TAREFA
+    tarefa.id = indice
+    tarefa.descricao = document.getElementById('tarefa').value
+    tarefa.tarefaFeita = false
+
+    //INSERE NO VETOR
+    tarefas.push(tarefa)
+
+    alert(tarefas.pop().id)
+
     
+    
+    //INSERE NO LOCALSTORAGE 
+    const listaJson = JSON.stringify(tarefas)
+    indice++
+
+    localStorage.setItem('Tarefas ', listaJson)
+    
+
+
+    
+    //CRIA UMA VARIAVEL PARA A LISTA
+    var ul = document.getElementById("listaTarefas")
+
     //CRIAÇÃO DOS ELEMENTOS 'LI/INPUT/LABEL/BUTTON' PARA SER ADICIONADO NA PAGINA
     var li = document.createElement("li")
     var chkbox = document.createElement('input')
@@ -18,7 +47,7 @@ function addTarefa(){
     //ALTERA ALGUMA PROPRIEDADE
     chkbox.type = 'checkbox'
     label.value = indice
-    label.innerText = tarefas[indice]
+    label.innerText = tarefas.pop().descricao
     botao.innerText = 'X'
 
     //INSERE O O VALOR DO INPUT NO ELEMENTO
@@ -27,93 +56,46 @@ function addTarefa(){
     li.appendChild(botao)
 
     //O ELEMENTO CRIADO E INSERIDO NA LISTA
-    lista.appendChild(li)
-    
+    ul.appendChild(li)
+
     //FUNCOES DOS ELEMENTOS CRIADOS
     chkbox.onclick = function () {
-        if(chkbox.checked == true){
+        if (chkbox.checked == true) {
             label.style.textDecoration = 'line-through'
-        }else{
+        } else {
             label.style.textDecoration = 'none'
         }
     };
 
     //REMOVE O ELEMENTO
-    botao.onclick = function(){
-        chkbox.remove()
-        label.remove()
-        botao.remove()
+    botao.onclick = function () { excluir(this)}
+        //chkbox.remove()
+        //label.remove()
+        //botao.remove()
 
-        localStorage.removeItem('Tarefa ' + label.value )
-    }
-
-    //INSERE NO LOCALSTORAGE 
-    localStorage.setItem('Tarefa ' + indice, tarefas[indice])
-    indice++
+        //localStorage.removeItem('Tarefa ' + label.value)
+    //}
 
     //LIMPA O CAMPO DE ADD TAREFA
     document.getElementById('tarefa').value = ''
 
 }
+chkbox.onclick = function () {
+    if (chkbox.checked == true) {
+        label.style.textDecoration = 'line-through'
+    } else {
+        label.style.textDecoration = 'none'
+    }
+}
+
+function excluir(element){
+    element.parentElement.remove()
+}
 
 
-    function carregaLista(){
-
-       
-
-        var teste = []
-        //CRIA UMA VARIAVEL PARA A LISTA
-        var lista = document.getElementById("listaTarefas")
-        for(let i = 0; i < localStorage.length; i++){
-                
-
-            //CRIAÇÃO DOS ELEMENTOS 'LI/INPUT/LABEL/BUTTON' PARA SER ADICIONADO NA PAGINA
-            var li = document.createElement("li")
-            var chkbox = document.createElement('input')
-            var botao = document.createElement('button')
-            var label = document.createElement('label')
-            
-            //ALTERA ALGUMA PROPRIEDADE
-            chkbox.type = 'checkbox'
-            //label.value = localStorage.key()
-            label.innerText = 'sld'
-            botao.innerText = 'X'
-            label.innerText = localStorage.getItem(localStorage.key(i))
-        
-            //INSERE O O VALOR DO INPUT NO ELEMENTO
-            li.appendChild(chkbox)
-            li.appendChild(label)
-            li.appendChild(botao)
-
-            
-            //O ELEMENTO CRIADO E INSERIDO NA LISTA
-            lista.appendChild(li)
-
-            //REMOVE O ELEMENTO
-            botao.onclick = function(){
-            chkbox = remove()
-            label = remove()
-            botao = remove()
- 
-        }
-            
-
-        }
-        
-
-        chkbox.onclick = function () {
-            if(chkbox.checked == true){
-                label.style.textDecoration = 'line-through'
-            }else{
-                label.style.textDecoration = 'none'
-            }
-        };
+function carregaLista() {
+  
+    
 
 
-    } 
-
-
-
-        
-        
-
+}
