@@ -1,5 +1,4 @@
 var _local_storage
-var lista_tarefas = new Array();
 
 //CRIANDO OBJETO TAREFA
 var tarefa = {
@@ -7,36 +6,26 @@ var tarefa = {
     tarefaFeita: false,
 }
 
-//VARIAVEIS
-let tarefas = new Array()
-
-
 function addTarefa() {
+    var lista_tarefas = new Array();
+
+    //PEGA O VALOR DO INPUT DIGITADO E COLOCA EM UMA VARIAVEL
     var valor_tarefa = document.getElementById('tarefa')
 
-    //PREENCHE O OBJETO TAREFA
+    //PREENCHE O OBJETO COM A TAREFA
     tarefa.descricao = valor_tarefa.value
-    tarefa.tarefaFeita = false
 
-    criarLista(valor_tarefa.value.trim(), true);
+    //CHAMA A FUNCAO PARA CRIAR UMA LISTA PASSANDO O VALOR DO INPUT + DEIXA O CHECKBOX COMO FALSE
+    criarLista(valor_tarefa.value.trim(), false);
 
-
-    // Pega a lista já cadastrada, se não houver vira um array vazio
+    //PEGA A LISTA JA CADASTRADA, SE NAO HOUVER CRIA UMA VAZIA
     lista_tarefas = JSON.parse(localStorage.getItem('Tarefas') || '[]');
-    // Adiciona pessoa ao cadastro
+
+    //ADICIONA O OBJETO PESSOA NA LISTA
     lista_tarefas.push(tarefa);
 
-    // Salva a lista alterada
+    //SALVA A LISTA ALTERADA
     localStorage.setItem("Tarefas", JSON.stringify(lista_tarefas));
-
-    //FUNCOES DOS ELEMENTOS CRIADOS
-    //chkbox.onclick = function () {
-    //    if (chkbox.checked == true) {
-    //        label.style.textDecoration = 'line-through'
-    //    } else {
-    //        label.style.textDecoration = 'none'
-    //    }
-    //};
 
     //LIMPA O CAMPO DE ADD TAREFA
     document.getElementById('tarefa').value = ''
@@ -44,27 +33,31 @@ function addTarefa() {
 }
 
 function criarLista(valorTarefa, situacao) {
-    //CRIA UMA VARIAVEL PARA A LISTA
+    //ARMAZENA O ELEMENTO LISTA UL EM UMA VARIAVEL
     var ul = document.getElementById("listaTarefas")
 
-    //CRIAÇÃO DOS ELEMENTOS 'LI/INPUT/LABEL/BUTTON' PARA SER ADICIONADO NA PAGINA
+    //CRIAÇÃO DOS ELEMENTOS 'LI/INPUT/BUTTON' PARA SER ADICIONADO NA PAGINA
     var li = document.createElement("li")
     var chkbox = document.createElement('input')
     var botao = document.createElement('button')
-    //var label = document.createElement('label')
 
-    //ALTERA ALGUMA PROPRIEDADE
+    //ALTERA A PROPRIEDADE DOS ELEMENTOS
     chkbox.type = 'checkbox'
-    //label.value = indice
-    //label.innerText = valor_tarefa.value
+    chkbox.checked = situacao
     botao.innerText = 'X'
     botao.setAttribute('id', valorTarefa)
-    chkbox.setAttribute('id', valorTarefa, situacao)
+    chkbox.setAttribute('id', valorTarefa)
+
+    //SE O CHECKBOX FOR TRUE ELE TRAS A TAREFA TAXADA
+    if (chkbox.checked == true) {
+        li.style.textDecoration = 'line-through'
+    } else {
+        li.style.textDecoration = 'none'
+    }
 
     //INSERE O O VALOR DO INPUT NO ELEMENTO
     li.appendChild(chkbox)
     li.appendChild(document.createTextNode(valorTarefa));
-    //li.appendChild(label)
     li.appendChild(botao)
 
     //O ELEMENTO CRIADO E INSERIDO NA LISTA
@@ -72,11 +65,38 @@ function criarLista(valorTarefa, situacao) {
 
     //REMOVE O ELEMENTO
     botao.onclick = function () { excluir(this) }
-    chkbox.onclick = function () { taxar(this) }
+    chkbox.onclick = function () { taxar2(this) }
+}
+
+function taxar2(elemento) {
+    _local_storage = localStorage.getItem('Tarefas')
+
+    var objeto = JSON.parse(_local_storage)
+
+    if (elemento.checked == true) {
+        for (var i = 0; i < objeto.length; i++) {
+            if (objeto[i].descricao == elemento.id) {
+                objeto[i].tarefaFeita = true
+                elemento.parentElement.style.textDecoration = 'line-through'
+                localStorage.setItem('Tarefas', JSON.stringify(objeto));
+            }
+        }
+
+    }else{
+        for (var i = 0; i < objeto.length; i++) {
+            if (objeto[i].descricao == elemento.id) {
+                objeto[i].tarefaFeita = false
+                elemento.parentElement.style.textDecoration = 'none'
+                localStorage.setItem('Tarefas', JSON.stringify(objeto));
+            }
+        }    
+    }
 }
 
 
 function taxar(elemento) {
+    _local_storage = localStorage.getItem('Tarefas')
+
     if (elemento.checked == true) {
         elemento.parentElement.style.textDecoration = 'line-through'
 
@@ -86,11 +106,11 @@ function taxar(elemento) {
         //alert(elemento.id)
         var guardaId = elemento.id
 
-        var novo_array = lista_tarefas.filter(valor => valor.descricao !== elemento.id)
+        var novo_array = objeto.filter(valor => valor.descricao !== elemento.id)
 
         objeto.descricao = novo_array
 
-        _local_storage = JSON.stringify(objeto.descricao)
+        var _local_storage = JSON.stringify(objeto.descricao)
         localStorage.setItem('Tarefas', _local_storage)
 
         //VALOR ATUALIZADO
@@ -98,28 +118,30 @@ function taxar(elemento) {
         tarefa.tarefaFeita = true
         novo_array.push(tarefa)
 
-       // Pega a lista já cadastrada, se não houver vira um array vazio
+        // Pega a lista já cadastrada, se não houver vira um array vazio
         lista_tarefas = JSON.parse(localStorage.getItem('Tarefas') || '[]')
         // Adiciona pessoa ao cadastro
         lista_tarefas.push(tarefa)
         // Salva a lista alterada
         localStorage.setItem("Tarefas", JSON.stringify(lista_tarefas))
 
-        
+
     } else {
+        _local_storage = localStorage.getItem('Tarefas')
+
         elemento.parentElement.style.textDecoration = 'none'
-        
+
         //EXCLUI O ELEMENTO
         var objeto = JSON.parse(_local_storage);
 
         //alert(elemento.id)
         var guardaId = elemento.id
 
-        var novo_array = lista_tarefas.filter(valor => valor.descricao !== elemento.id)
+        var novo_array = objeto.filter(valor => valor.descricao !== elemento.id)
 
         objeto.descricao = novo_array
 
-        _local_storage = JSON.stringify(objeto.descricao)
+        var _local_storage = JSON.stringify(objeto.descricao)
         localStorage.setItem('Tarefas', _local_storage)
 
         //VALOR ATUALIZADO
@@ -127,7 +149,7 @@ function taxar(elemento) {
         tarefa.tarefaFeita = false
         novo_array.push(tarefa)
 
-       // Pega a lista já cadastrada, se não houver vira um array vazio
+        // Pega a lista já cadastrada, se não houver vira um array vazio
         lista_tarefas = JSON.parse(localStorage.getItem('Tarefas') || '[]')
         // Adiciona pessoa ao cadastro
         lista_tarefas.push(tarefa)
@@ -137,11 +159,13 @@ function taxar(elemento) {
 }
 
 function excluir(elemento) {
+    //ARMAZENA OS DADOS DO LOCALSTORAGE EM UMA VARIAVEL
     _local_storage = localStorage.getItem('Tarefas')
 
+    //FAZ A CONVERSAO E ARMAZENA EM OUTRA VARIAVEL
     var objeto = JSON.parse(_local_storage);
 
-    var novo_array = lista_tarefas.filter(valor => valor.descricao !== elemento.id);
+    var novo_array = objeto.filter(valor => valor.descricao !== elemento.id);
 
     objeto.descricao = novo_array;
 
@@ -152,26 +176,19 @@ function excluir(elemento) {
 
 }
 
-//function taxar(elemento){
-//    if(chkbox.value = fa){
-
-//    }
-//}
 
 window.onload = function carregar() {
-    _local_storage = localStorage.getItem('Tarefas')
+    if (localStorage.getItem('Tarefas') != null) {
 
-    var objeto = JSON.parse(_local_storage);
+        _local_storage = localStorage.getItem('Tarefas')
 
-    lista_tarefas = objeto
+        var objeto = JSON.parse(_local_storage);
 
-    console.log(lista_tarefas)
+        lista_tarefas = objeto
 
-    objeto.forEach(valor => {    
-        criarLista(valor.descricao, valor.tarefaFeita)
-        //
-       
-    })
-    
+        objeto.forEach(valor => {
+            criarLista(valor.descricao, valor.tarefaFeita)
+        })
+    }
 }
 
