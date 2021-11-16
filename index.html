@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,17 +12,41 @@
 
     <link rel="shortcut icon" href="imagens/lista.png" type="image/x-icon" />
 </head>
+
 <body>
 
-    <h1>Lista de Afazeres</h1>
+    
+    <div class="container">
+        <div class="box">
 
-    <input type="text" id="tarefa" placeholder="Digite uma tarefa..">
-    <button onclick="addTarefa()">Adicionar</button>
+            <h1>✔️To-Do List</h1>
+         
+            <hr>
 
+            <form action="#">
+                
+                <center>
+                    <input type="text" required id="tarefa" placeholder="Digite uma tarefa.." maxlength="30">
+                    <button onclick="addTarefa()" id="adicionar"></button>
+                </center>   
+               
+               
+               <ul id="listaTarefas" onload="carregaLista()">
 
-    <ul id="listaTarefas" onload="carregaLista()"> 
-       
-    </ul>
+                </ul>
+                
+
+            </form>
+
+        </div>
+    </div>
+
+    <footer>Copyright &#169;<br>
+        Projeto DEVInHouse - Desenvolvido por Victor Higa.
+
+    </footer>
+
 
 </body>
+
 </html>
