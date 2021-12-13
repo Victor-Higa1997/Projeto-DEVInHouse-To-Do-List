@@ -15,3 +15,4 @@ HTML: principais tags como head, meta, title, body, div, h1, form, input, button
 CSS: estilizar a página, os botões, inputs, alterar atributos dos elementos da tela de acordo com a interação do usuário para uma melhor experiência do usuário (UX).
 Javascript: variáveis, arrays, funções, manipulação do DOM (eventos, elementos e seus atributos), manipular objetos (JSON), utilizar o localStorage.
 
+Para testar o projeto clique aqui: https://victor-higa1997.github.io/Projeto-DEVInHouse-To-Do-List/
